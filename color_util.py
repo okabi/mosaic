@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import copy
+import cv2
 import math
 import numpy as np
 
@@ -36,9 +38,10 @@ class ColorUtil:
                       [-0.9689, 1.8758, 0.0415],
                       [0.0557, -0.2040, 1.0570]])
         l = m.dot([x, y, z]).tolist()
-        return map(lambda w: w * 12.92 if w <= 0.0031308
-                   else (math.e ** (math.log(w) / 2.4)) * 1.055 - 0.055,
-                   l)
+        ret = map(lambda w: w * 12.92 if w <= 0.0031308
+                  else (math.e ** (math.log(w) / 2.4)) * 1.055 - 0.055,
+                  l)
+        return map(lambda w: min(1.0, max(0.0, w)), ret)
 
 
     @staticmethod
@@ -75,18 +78,63 @@ class ColorUtil:
         return [d, dl, da, db]
 
 
-# テスト用
-# c = [255, 100, 0]
-# print c
-# sc = ColorUtil.rgb_to_srgb(c[0], c[1], c[2])
-# print sc
-# xyz = ColorUtil.srgb_to_xyz(sc[0], sc[1], sc[2])
-# print xyz
-# lab = ColorUtil.xyz_to_lab(xyz[0], xyz[1], xyz[2])
-# print lab
-# xyz = ColorUtil.lab_to_xyz(lab[0], lab[1], lab[2])
-# print xyz
-# sc = ColorUtil.xyz_to_srgb(xyz[0], xyz[1], xyz[2])
-# print sc
-# c = ColorUtil.srgb_to_rgb(sc[0], sc[1], sc[2])
-# print c
+    @staticmethod
+    def mean_rgb(img):
+        """ 画像の RGB 平均値を返す """
+        return img.mean(axis=(0, 1)).astype(np.int16).tolist()[::-1]
+
+
+    @staticmethod
+    def mean_lab(img):
+        """ 画像の L*a*b* 平均値を返す """
+        shape = np.shape(img)
+        labs = np.zeros((shape[0] * shape[1], 3))
+        for i in xrange(shape[0]):
+            for j in xrange(shape[1]):
+                n = shape[0] * i + j
+                rgb = img[i, j].tolist()[::-1]
+                sr, sg, sb = ColorUtil.rgb_to_srgb(rgb[0], rgb[1], rgb[2])
+                x, y, z = ColorUtil.srgb_to_xyz(sr, sg, sb)
+                labs[n] = ColorUtil.xyz_to_lab(x, y, z)
+        return labs.mean(axis=0).tolist()
+
+
+    @staticmethod
+    def revise(img1, l1, a1, b1, l2, a2, b2):
+        """ 平均 L*a*b* から、img1 を img2 の色に補正する。 """
+        pl = l2 / l1
+        pa = a2 / a1
+        pb = b2 / b1
+        shape = np.shape(img1)
+        ret = copy.deepcopy(img1)
+        for i in xrange(shape[0]):
+            for j in xrange(shape[1]):
+                r, g, b = ret[i, j]
+                sr, sg, sb = ColorUtil.rgb_to_srgb(r, g, b)
+                x, y, z = ColorUtil.srgb_to_xyz(sr, sg, sb)
+                l, a, b = ColorUtil.xyz_to_lab(x, y, z)
+                l *= pl
+                a *= pa
+                b *= pb
+                x, y, z = ColorUtil.lab_to_xyz(l, a, b)
+                sr, sg, sb = ColorUtil.xyz_to_srgb(x, y, z)
+                r, g, b = ColorUtil.srgb_to_rgb(sr, sg, sb)
+                ret[i, j] = [r, g, b]
+        return ret
+
+
+if __name__ == '__main__':
+    c = [255, 100, 0]
+    print c
+    sc = ColorUtil.rgb_to_srgb(c[0], c[1], c[2])
+    print sc
+    xyz = ColorUtil.srgb_to_xyz(sc[0], sc[1], sc[2])
+    print xyz
+    lab = ColorUtil.xyz_to_lab(xyz[0], xyz[1], xyz[2])
+    print lab
+    xyz = ColorUtil.lab_to_xyz(lab[0], lab[1], lab[2])
+    print xyz
+    sc = ColorUtil.xyz_to_srgb(xyz[0], xyz[1], xyz[2])
+    print sc
+    c = ColorUtil.srgb_to_rgb(sc[0], sc[1], sc[2])
+    print c
