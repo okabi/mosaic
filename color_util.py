@@ -4,6 +4,7 @@ import cv2
 import math
 import numpy as np
 
+
 class ColorUtil:
     """ 色変換の便利関数群 """
 

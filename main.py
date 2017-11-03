@@ -2,20 +2,22 @@
 import cv2
 import numpy as np
 from color_util import ColorUtil
-
-
+from generator import Generator
+from manager import Manager
 
 if __name__ == '__main__':
-    img1 = cv2.imread('test4.jpg')
-    l1, a1, b1 = ColorUtil.mean_lab(img1)
-    print [l1, a1, b1]
+    db = 'images.sqlite3'
+    elem_list = ['test1.jpg', 'test2.jpg', 'test3.png', 'test4.jpg']
+    target_img = cv2.imread('mario2.png')
 
-    img2 = cv2.imread('test3.png')
-    l2, a2, b2 = ColorUtil.mean_lab(img2)
-    print [l2, a2, b2]
+    manager = Manager(db)
+    manager.danger_drop()
+    manager = Manager(db)
 
-    d, dl, da, db = ColorUtil.lab_euclid_distance(l1, a1, b1, l2, a2, b2)
-    print [d, dl, da, db]
+    for e in elem_list:
+        img = cv2.imread(e)
+        manager.add(img, e, 0)
 
-    revised = ColorUtil.revise(img1, l1, a1, b1, l2, a2, b2)
-    cv2.imwrite('output4.png', revised)
+    generator = Generator()
+    generator.load(manager, 'output.png')
+    generator.generate(target_img, (2, 2), (20, 20))
