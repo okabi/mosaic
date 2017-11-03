@@ -14,26 +14,27 @@ class Manager:
               create table if not exists images(
                   id integer primary key,
                   path text unique not null,
-                  mean_l real not null,
-                  mean_a real not null,
-                  mean_b real not null,
+                  mean_h real not null,
+                  mean_s real not null,
+                  mean_v real not null,
                   fav_count integer not null);
               """
         self.__db.execute(sql)
 
 
     def __del__(self):
+        self.__db.commit()
         self.__db.close()
 
 
     def add(self, img, path, fav_count):
         """ 画像情報を DB に追加する """
-        l, a, b = ColorUtil.mean_lab(img)
+        h, s, v = ColorUtil.mean_hsv(img)
         sql = """
-              insert into images(path, mean_l, mean_a, mean_b, fav_count)
+              insert into images(path, mean_h, mean_s, mean_v, fav_count)
               values (?, ?, ?, ?, ?)
               """
-        self.__db.execute(sql, (path, l, a, b, fav_count))
+        self.__db.execute(sql, (path, h, s, v, fav_count))
 
 
     def get(self):
