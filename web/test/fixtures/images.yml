@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  path: MyString
+  mean_h: 1.5
+  mean_s: 1.5
+  mean_v: 1.5
+  fav_count: 1
+
+two:
+  path: MyString
+  mean_h: 1.5
+  mean_s: 1.5
+  mean_v: 1.5
+  fav_count: 1
