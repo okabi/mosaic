@@ -1,3 +1,5 @@
 *.jpg
 *.png
 *.sqlite3
+*.pyc
+
