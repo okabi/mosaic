@@ -173,7 +173,8 @@ class ColorUtil:
                 rgb = img[i, j].tolist()[::-1]
                 sr, sg, sb = ColorUtil.rgb_to_srgb(rgb[0], rgb[1], rgb[2])
                 hsvs[n] = ColorUtil.srgb_to_hsv(sr, sg, sb)
-        return np.median(hsvs, axis=0).tolist()
+        # return np.median(hsvs, axis=0).tolist()
+        return hsvs.mean(axis=0).tolist()
 
 
     # 補正関連
