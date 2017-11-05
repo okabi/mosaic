@@ -1,1 +1,29 @@
 <% provide(:title, 'ホーム') %>
+<h2>Mosaic Art Generator</h2>
+
+<p>現在完成しているモザイクアート</p>
+
+<div align="center">
+  <%= image_tag('output.jpg') %>
+</div>
+
+<p>現在登録されている画像の数: <%= @images_num %></p>
+
+<p>メニューから素材画像を登録してください。登録が完了したら、以下からモザイクアートを生成してください。</p>
+
+<% if logs.size == 0 || logs[logs.size - 1] == 'end' %>
+  <%= form_for(target, url: static_pages_create_path, html: { class: "form-horizontal" }) do |f| %>
+    <%= render 'shared/error_messages', object: f.object if show_errors %>
+
+    <%= form_file_field f, :path, '目標画像' %>
+    <%= form_submit f, 'モザイクアートを生成する' %>
+  <% end %>
+<% else %>
+  <p>モザイクアート生成ログ</p>
+  <p>
+    <% logs.each do |l| %>
+      <%= simple_format(l) %>
+      <br>
+    <% end %>
+  </p>
+<% end %>

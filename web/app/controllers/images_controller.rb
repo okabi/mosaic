@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class ImagesController < ApplicationController
   def index
     @images = Image.all

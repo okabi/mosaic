@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171104075553) do
+ActiveRecord::Schema.define(version: 20171105093351) do
 
   create_table "images", force: :cascade do |t|
     t.string   "path",                   null: false
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(version: 20171104075553) do
     t.integer  "fav_count",  default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "targets", force: :cascade do |t|
+    t.string   "path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
