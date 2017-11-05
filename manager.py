@@ -14,9 +14,9 @@ class Manager:
               create table if not exists images(
                   id integer primary key,
                   path text unique not null,
-                  mean_h real not null,
-                  mean_s real not null,
-                  mean_v real not null,
+                  mean_h real,
+                  mean_s real,
+                  mean_v real,
                   fav_count integer not null);
               """
         self.__db.execute(sql)
@@ -37,10 +37,24 @@ class Manager:
         self.__db.execute(sql, (path, h, s, v, fav_count))
 
 
-    def get(self):
+    def get(self, id=None):
         """ 画像情報を DB から取得する """
-        sql = """ select * from images """
-        return [x for x in self.__db.execute(sql)]
+        if id is None:
+            sql = """ select * from images """
+            return [x for x in self.__db.execute(sql)]
+        else:
+            sql = """ select * from images where id = ? """
+            return [x for x in self.__db.execute(sql, (id))]
+
+
+    def update_hsv(self, id, h, s, v):
+        """ 画像の HSV を更新する """
+        sql = """
+              update images set
+              mean_h = ?, mean_s = ?, mean_v = ?
+              where id = ?
+              """
+        self.__db.execute(sql, (h, s, v, id))
 
 
     def update_fav_count(self, id, new_fav_count):
