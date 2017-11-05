@@ -15,17 +15,21 @@ class ImagesController < ApplicationController
       flash[:danger] = '画像が選択されていません。'
       redirect_to new_image_url
       return
+    elsif Image.find_by_path(pa[:path]) != nil
+      flash[:danger] = 'ファイル名が重複しています。'
+      redirect_to new_image_url
+      return
     end
 
     # アップロードされた画像を保存
     image = Image.new(pa)
     if image.save
       # Python プログラムを起動
-      system('python assets/main_save.py ' + image.id.to_s)
+      system('python /home/okabi/Projects/mosaic/main_save.py ' + image.id.to_s)
       flash[:success] = '画像のアップロードが完了しました。'
       redirect_to images_url
     else
-      flash[:danger] = 'アップロード時にエラーが発生しました。ファイル名が重複している可能性があります。'
+      flash[:danger] = 'アップロード時にエラーが発生しました。もう一度アップロードしてください。'
       redirect_to new_image_url
     end
   end
