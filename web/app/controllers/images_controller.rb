@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ImagesController < ApplicationController
   def index
     @images = Image.all
@@ -15,7 +16,7 @@ class ImagesController < ApplicationController
       flash[:danger] = '画像が選択されていません。'
       redirect_to new_image_url
       return
-    elsif Image.find_by_path(pa[:path]) != nil
+    elsif Image.find_by_path(pa[:path].original_filename) != nil
       flash[:danger] = 'ファイル名が重複しています。'
       redirect_to new_image_url
       return
