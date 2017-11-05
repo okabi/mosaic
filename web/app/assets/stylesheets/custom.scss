@@ -1,0 +1,41 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* universal */
+
+body {
+  padding-top: 60px;
+}
+
+h2{
+  padding-bottom: 7px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: white;
+  letter-spacing: -1px;
+  padding-top: 14px;
+  font-weight: bold;
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+/* date */
+
+.bootstrap-date {
+  display: inline-block;
+  width: auto;
+}
+
+div.container, section{
+  margin-bottom: 20px;
+}

@@ -1,0 +1,7 @@
+<%= form_for(image, url: form_for_url, html: { class: "form-horizontal" }) do |f| %>
+  <%= render 'shared/error_messages', object: f.object if show_errors %>
+
+  <%= form_file_field f, :path, '画像' %>
+  <%= form_number_field f, :fav_count, 'いいね数' %>
+  <%= form_submit f, submit_label %>
+<% end %>

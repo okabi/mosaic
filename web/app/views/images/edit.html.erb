@@ -1,2 +1,28 @@
-<h1>Images#edit</h1>
-<p>Find me in app/views/images/edit.html.erb</p>
+<% provide(:title, '設定') %>
+<h2><%= yield(:title) %></h2>
+
+<%= panel(type: 'default',
+          header: '<h3>アカウント情報</h3>',
+          body: render(partial: 'form',
+                       locals: { form_for_url: settings_path, participant: @participant,
+                                 classifications: @classifications, faculties: @faculties,
+                                 courses: @courses, submit_label: '更新する', type: 'password', show_errors: @type == 'password' })) %>
+
+<%= panel(type: 'default',
+          header: '<h3>プロフィール</h3>',
+          body: render(partial: 'form',
+                       locals: { form_for_url: settings_path, participant: @participant,
+                                 classifications: @classifications, faculties: @faculties,
+                                 courses: @courses, submit_label: '更新する', type: 'profile', show_errors: @type == 'profile' })) %>
+
+<%= panel(type: 'default',
+          header: '<h3>メールアドレス</h3>',
+          body: render(partial: 'form',
+                       locals: { form_for_url: settings_path, participant: @participant,
+                                 classifications: @classifications, faculties: @faculties,
+                                 courses: @courses, submit_label: '更新する', type: 'email_update', show_errors: @type == 'email_update' })) %>
+
+<%= panel(type: 'danger',
+          header: '<h3>アカウント削除</h3>',
+          body: render(partial: 'destroy',
+                       locals: { participant: @participant })) %>

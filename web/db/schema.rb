@@ -14,10 +14,10 @@ ActiveRecord::Schema.define(version: 20171104075553) do
 
   create_table "images", force: :cascade do |t|
     t.string   "path",                   null: false
-    t.float    "mean_h",                 null: false
-    t.float    "mean_s",                 null: false
-    t.float    "mean_v",                 null: false
-    t.integer  "fav_count",  default: 0, null: false
+    t.float    "mean_h"
+    t.float    "mean_s"
+    t.float    "mean_v"
+    t.integer  "fav_count",  default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

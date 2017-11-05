@@ -1,2 +1,7 @@
-<h1>Images#new</h1>
-<p>Find me in app/views/images/new.html.erb</p>
+<% provide(:title, '画像登録') %>
+<h2><%= yield(:title) %></h2>
+
+<p>素材画像を登録します。</p>
+
+<%= render partial: 'form',
+           locals: { form_for_url: images_path, image: @image, submit_label: '登録する', show_errors: true } %>
