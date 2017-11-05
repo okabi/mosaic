@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import copy
 import cv2
+import subprocess
 import numpy as np
 from color_util import ColorUtil
+from manager import Manager
 
 
 class Generator:
@@ -13,12 +15,14 @@ class Generator:
         self.infos = manager.get()
         self.images = []
         for info in self.infos:
-            self.images.append(cv2.imread(info[1]))
-        self.path = path
+            pa = "/home/okabi/Projects/mosaic/web/public/images/{:}".format(info[1])
+            self.images.append(cv2.imread(pa))
+        self.out_path = path
 
 
     def generate(self, target_img, in_elem_size, out_elem_size):
         """ 読み込んだ画像から目標っぽいモザイク画像を生成する """
+        # output.jpg の削除
         print 'target hsvs...'
         target_hsvs = self.__target_hsvs(target_img, in_elem_size)
         print 'distances...'
@@ -27,6 +31,7 @@ class Generator:
         adopts = self.__adopt(distances)
         print 'generating...'
         self.__generate(target_hsvs, adopts, out_elem_size)
+        print 'end'
 
 
     def __target_hsvs(self, target_img, elem_size):
@@ -115,4 +120,5 @@ class Generator:
                         r, g, b = rgbs[i2, j2]
                         img[out_elem_size[0] * i + i2, out_elem_size[1] * j + j2] = [b, g, r]
         # 画像出力
-        cv2.imwrite(self.path, img)
+        cv2.imwrite(self.out_path, img)
+

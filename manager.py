@@ -8,7 +8,8 @@ from color_util import ColorUtil
 class Manager:
     """ モザイクアートのための画像管理クラス """
 
-    def __init__(self, db_path):
+    def __init__(self):
+        db_path = '/home/okabi/Projects/mosaic/web/db/production.sqlite3'
         self.__db = sqlite3.connect(db_path)
         sql = """
               create table if not exists images(
@@ -44,7 +45,7 @@ class Manager:
             return [x for x in self.__db.execute(sql)]
         else:
             sql = """ select * from images where id = ? """
-            return [x for x in self.__db.execute(sql, (id))]
+            return [x for x in self.__db.execute(sql, (id,))]
 
 
     def update_hsv(self, id, h, s, v):
