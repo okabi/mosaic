@@ -21,9 +21,11 @@ class ImagesController < ApplicationController
     image = Image.new(pa)
     if image.save
       # Python プログラムを起動
+      system('python assets/main_save.py ' + image.id.to_s)
+      flash[:success] = '画像のアップロードが完了しました。'
       redirect_to images_url
     else
-      flash[:danger] = 'アップロード時にエラーが発生しました。もう一度アップロードしてください。'
+      flash[:danger] = 'アップロード時にエラーが発生しました。ファイル名が重複している可能性があります。'
       redirect_to new_image_url
     end
   end

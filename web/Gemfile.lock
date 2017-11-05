@@ -94,9 +94,6 @@ GEM
       mini_portile2 (~> 2.3.0)
     nokogiri (1.8.1-x64-mingw32)
       mini_portile2 (~> 2.3.0)
-    passenger (5.1.11)
-      rack
-      rake (>= 0.8.1)
     puma (3.10.0)
     rack (2.0.3)
     rack-test (0.6.3)
@@ -181,7 +178,6 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   mini_magick
-  passenger
   puma (~> 3.0)
   rails (~> 5.0.1)
   sass-rails (~> 5.0)
