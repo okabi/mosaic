@@ -6,9 +6,11 @@ class StaticPagesController < ApplicationController
     @target = Target.new
     @images_num = Image.all.size
     @log = []
-    File.open('/home/okabi/Projects/mosaic/web/public/log.txt', 'r') do |file|
-      file.each do |s|
-        @log.push(s)
+    if Rails.env == 'production'
+      File.open('/home/okabi/Projects/mosaic/web/public/log.txt', 'r') do |file|
+        file.each do |s|
+          @log.push(s)
+        end
       end
     end
   end
