@@ -9,9 +9,7 @@
       <b>HSV = (<%= image.mean_h.round(2) %>, <%= image.mean_s.round(2) %>, <%= image.mean_v.round(2) %>)</b>
     </div>
     <div class="panel-body">
-      <div align="center">
-        <%= link_to image_tag(image.path.thumb.url), image.path.url if image.path.thumb.url.present? %>
-      </div>
+      <%= link_to image_tag(image.path.thumb.url), image.path.url if image.path.thumb.url.present? %>
       <div align="center">
         いいねの数: <%= image.fav_count %>
       </div>
