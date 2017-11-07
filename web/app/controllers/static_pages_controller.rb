@@ -21,6 +21,10 @@ class StaticPagesController < ApplicationController
       flash[:danger] = '画像が選択されていません。'
       redirect_to root_url
       return
+    elsif Image.all.size == 0
+      flash[:danger] = '素材画像が登録されていません。メニューから登録してください。'
+      redirect_to root_url
+      return
     end
     pa = target_params
 
@@ -28,7 +32,9 @@ class StaticPagesController < ApplicationController
     target = Target.new(pa)
     if target.save
       # Python プログラムを実行
-      Open3.popen3('python /home/okabi/Projects/mosaic/main.py ' + target.id.to_s + ' > /home/okabi/Projects/mosaic/web/public/log.txt 2>&1')
+      if Rails.env == 'production'
+        Open3.popen3('python /home/okabi/Projects/mosaic/main.py ' + target.id.to_s + ' > /home/okabi/Projects/mosaic/web/public/log.txt 2>&1')
+      end
       flash[:success] = 'モザイクアートを生成しています。しばらくしてからページを更新してください。'
       redirect_to root_url
     else

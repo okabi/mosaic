@@ -1,28 +1,7 @@
-<% provide(:title, '設定') %>
+<% provide(:title, '画像編集') %>
 <h2><%= yield(:title) %></h2>
 
-<%= panel(type: 'default',
-          header: '<h3>アカウント情報</h3>',
-          body: render(partial: 'form',
-                       locals: { form_for_url: settings_path, participant: @participant,
-                                 classifications: @classifications, faculties: @faculties,
-                                 courses: @courses, submit_label: '更新する', type: 'password', show_errors: @type == 'password' })) %>
+<p>素材画像の情報を編集します。</p>
 
-<%= panel(type: 'default',
-          header: '<h3>プロフィール</h3>',
-          body: render(partial: 'form',
-                       locals: { form_for_url: settings_path, participant: @participant,
-                                 classifications: @classifications, faculties: @faculties,
-                                 courses: @courses, submit_label: '更新する', type: 'profile', show_errors: @type == 'profile' })) %>
-
-<%= panel(type: 'default',
-          header: '<h3>メールアドレス</h3>',
-          body: render(partial: 'form',
-                       locals: { form_for_url: settings_path, participant: @participant,
-                                 classifications: @classifications, faculties: @faculties,
-                                 courses: @courses, submit_label: '更新する', type: 'email_update', show_errors: @type == 'email_update' })) %>
-
-<%= panel(type: 'danger',
-          header: '<h3>アカウント削除</h3>',
-          body: render(partial: 'destroy',
-                       locals: { participant: @participant })) %>
+<%= render partial: 'form',
+           locals: { form_for_url: image_path(@image), image: @image, submit_label: '更新する', is_new: false } %>

@@ -4,4 +4,4 @@
 <p>素材画像を登録します。</p>
 
 <%= render partial: 'form',
-           locals: { form_for_url: images_path, image: @image, submit_label: '登録する', show_errors: true } %>
+           locals: { form_for_url: images_path, image: @image, submit_label: '登録する', is_new: true } %>

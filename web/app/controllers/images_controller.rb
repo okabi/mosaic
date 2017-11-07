@@ -1,6 +1,13 @@
 class ImagesController < ApplicationController
   def index
     @images = Image.all
+    @images.each do |i|
+      if i.mean_h.nil?
+        i.mean_h = -1
+        i.mean_s = -1
+        i.mean_v = -1
+      end
+    end
   end
 
   def new
@@ -25,7 +32,9 @@ class ImagesController < ApplicationController
     image = Image.new(pa)
     if image.save
       # Python プログラムを起動
-      system('python /home/okabi/Projects/mosaic/main_save.py ' + image.id.to_s)
+      if Rails.env == 'production'
+        system('python /home/okabi/Projects/mosaic/main_save.py ' + image.id.to_s)
+      end
       flash[:success] = '画像のアップロードが完了しました。'
       redirect_to images_url
     else
@@ -35,12 +44,31 @@ class ImagesController < ApplicationController
   end
 
   def edit
+    @image = Image.find_by_id(params[:id])
+    if @image.nil?
+      redirect_to images_url
+      return
+    end
   end
 
   def update
+    @image = Image.find_by_id(params[:id])
+    pa = params.require(:image).permit(:fav_count)
+    if !@image.nil?
+      @image.update_attribute('fav_count', pa[:fav_count])
+      flash[:success] = '更新が正常に完了しました。'
+    end
+    redirect_to images_url
   end
 
   def destroy
+    @image = Image.find_by_id(params[:id])
+    text = "#{@image.path} を削除しました。"
+    if !@image.nil?
+      @image.destroy
+      flash[:success] = text
+    end
+    redirect_to images_url
   end
 
   private

@@ -14,10 +14,12 @@
         いいねの数: <%= image.fav_count %>
       </div>
     </div>
-    <!--
-         <div class="panel-footer">
-         <%= link_to "編集", edit_image_path(image[:id]), class: 'form-control btn btn-success' %>
-         </div>
-       -->
+    <div class="panel-footer">
+      <div class="btn-group btn-group-justified">
+        <%= link_to "編集", edit_image_path(image), class: 'btn btn-success' %>
+        <%= link_to "削除", image, method: :delete, class: 'btn btn-danger',
+                    data: { confirm: image[:path] + 'を本当に削除しますか？' } %>
+      </div>
+    </div>
   </div>
 <% end %>

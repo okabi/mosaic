@@ -1,7 +1,11 @@
 <%= form_for(image, url: form_for_url, html: { class: "form-horizontal" }) do |f| %>
-  <%= render 'shared/error_messages', object: f.object if show_errors %>
+  <%= render 'shared/error_messages', object: f.object %>
 
-  <%= form_file_field f, :path, '画像' %>
+  <% if is_new %>
+    <%= form_file_field f, :path, '画像' %>
+  <% else %>
+    <%= link_to image_tag(image.path.thumb.url), image.path.url if image.path.thumb.url.present? %>
+  <% end %>
   <%= form_number_field f, :fav_count, 'いいね数' %>
   <%= form_submit f, submit_label %>
 <% end %>
